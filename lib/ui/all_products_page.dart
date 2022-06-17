@@ -1,27 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:state_management/business/provider/cart_state.dart';
 import 'package:state_management/data/service/product_service.dart';
 import 'package:state_management/ui/cart_page.dart';
 
-import '../data/model/product.dart';
-
-class ProductsPage extends StatefulWidget {
+class ProductsPage extends ConsumerWidget {
   const ProductsPage({
     Key? key,
     required String title,
   }) : super(key: key);
 
   @override
-  State<ProductsPage> createState() => _ProductsPageState();
-}
-
-class _ProductsPageState extends State<ProductsPage> {
-  final productService = ProductService();
-
-  @override
-  Widget build(BuildContext context) {
-    List<Product> products = productService.getAllProducts();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final products = ProductService().getAllProducts();
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -43,9 +34,10 @@ class _ProductsPageState extends State<ProductsPage> {
               leading: Image.network(product.image),
               title: Text(product.name),
               subtitle: Text(product.description),
-              onTap: () => {
-                Provider.of<CartState>(context, listen: false)
-                    .addProductToCart(product: product)
+              onTap: () {
+                CartStateNotifier cartProducts =
+                    ref.read(cartStateProvider.state).state;
+                cartProducts.addProductToCart(product: product);
               },
             );
           }),

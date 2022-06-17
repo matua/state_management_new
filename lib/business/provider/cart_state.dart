@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/model/product.dart';
 
-class CartState extends ChangeNotifier {
-  final List<Product> products = [];
+final cartStateProvider = StateProvider((ref) => CartStateNotifier());
 
-  void addProductToCart({required Product product}) {
-    products.add(product);
-    notifyListeners();
-  }
+class CartStateNotifier extends StateNotifier<List<Product>> {
+  CartStateNotifier() : super(List<Product>.empty(growable: true));
+
+  void addProductToCart({required Product product}) => state.add(product);
 }

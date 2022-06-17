@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:state_management/business/provider/cart_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'ui/all_products_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -13,12 +12,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<CartState>(
-      create: (BuildContext context) => CartState(),
-      child: const MaterialApp(
-        title: 'Simple State Management - Provider',
-        home: ProductsPage(title: 'Products'),
-      ),
+    return const MaterialApp(
+      title: 'Simple State Management - Provider',
+      home: ProductsPage(title: 'Products'),
     );
   }
 }
