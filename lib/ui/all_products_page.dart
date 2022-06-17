@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:state_management/business/provider/cart_state.dart';
-import 'package:state_management/data/products_json.dart';
 import 'package:state_management/data/service/product_service.dart';
 import 'package:state_management/ui/cart_page.dart';
 
@@ -21,12 +18,10 @@ class ProductsPage extends StatefulWidget {
 
 class _ProductsPageState extends State<ProductsPage> {
   final productService = ProductService();
-  final String json = SampleData().productsJsonString;
 
   @override
   Widget build(BuildContext context) {
-    List<Product> products =
-        productService.getAllProducts(jsonDecode(json) as List<dynamic>);
+    List<Product> products = productService.getAllProducts();
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
