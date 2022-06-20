@@ -1,33 +1,19 @@
-import 'dart:async';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/model/product.dart';
 import 'cart_event.dart';
 
-class CartBloc {
+class CartBloc extends Bloc<CartEvent, List<Product>> {
+  CartBloc() : super([]);
   List<Product> _products = List<Product>.empty(growable: true);
 
-  final _eventsController = StreamController<CartEvent>();
-  final _stateController = StreamController<List<Product>>();
-
-  Stream<List<Product>> get state => _stateController.stream;
-
-  Sink<CartEvent> get action => _eventsController.sink;
-
-  CartBloc() {
-    _eventsController.stream.listen(_mapEventToState);
-  }
-
-  void _mapEventToState(CartEvent action) async {
-    if (action is AddProductEvent) {
-      _products = [action.product, ..._products];
-    } else if (action is RemoveProductEvent) {
-      _products.removeWhere((element) => element == action.product);
+  @override
+  mapEventToState(CartEvent event) async* {
+    if (event is AddProductEvent) {
+      _products = [event.product, ..._products];
+    } else if (event is RemoveProductEvent) {
+      _products.removeWhere((element) => element == event.product);
     }
-    _stateController.add(_products);
-  }
-
-  void dispose() {
-    _stateController.close();
-    _eventsController.close();
+    yield _products;
   }
 }

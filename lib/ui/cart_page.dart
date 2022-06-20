@@ -1,56 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:state_management/business/bloc/cart_event.dart';
 import 'package:state_management/business/bloc/cart_state_block.dart';
 
 import '../data/model/product.dart';
-import '../main.dart';
 
-class CartPage extends StatefulWidget {
+class CartPage extends StatelessWidget {
   const CartPage({Key? key}) : super(key: key);
 
   @override
-  State<CartPage> createState() => _CartPageState();
-}
-
-class _CartPageState extends State<CartPage> {
-  @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Product>>(
-        stream: getIt<CartBloc>().state,
-        builder: (_, snapshot) {
-          if (snapshot.hasData) {
-            int? itemCount;
-            List<Product>? products;
-            itemCount = snapshot.data?.length;
-            if (itemCount == 0) {
-              return const Center(child: Text('No items in the cart yet'));
-            }
-            products = snapshot.data;
-            return ListView.builder(
-                itemCount: itemCount,
-                itemBuilder: (BuildContext context, int index) {
-                  final Product product;
-                  product = products![index];
-                  return Dismissible(
-                    key: Key(product.id.toString()),
-                    onDismissed: (direction) {
-                      getIt<CartBloc>()
-                          .action
-                          .add(RemoveProductEvent(product: product));
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: const Duration(milliseconds: 300),
-                          content: Text('${product.description} removed')));
-                    },
-                    child: ListTile(
-                      leading: Image.network(product.image),
-                      title: Text(product.name),
-                      subtitle: Text(product.description),
-                    ),
-                  );
-                });
-          } else {
-            return const Center(child: Text('No items in the cart yet'));
-          }
-        });
+    return BlocBuilder<CartBloc, List<Product>>(
+      builder: (_, state) => ListView.builder(
+          itemCount: state.length,
+          itemBuilder: (BuildContext context, int index) {
+            final Product product;
+            product = state[index];
+            return Dismissible(
+              key: Key(product.id.toString()),
+              onDismissed: (direction) {
+                context
+                    .read<CartBloc>()
+                    .add(RemoveProductEvent(product: product));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    duration: const Duration(milliseconds: 300),
+                    content: Text('${product.description} removed')));
+              },
+              child: ListTile(
+                leading: Image.network(product.image),
+                title: Text(product.name),
+                subtitle: Text(product.description),
+              ),
+            );
+          }),
+    );
   }
 }
