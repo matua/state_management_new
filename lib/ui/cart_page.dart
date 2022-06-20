@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:state_management/business/bloc/cart_event.dart';
 import 'package:state_management/business/bloc/cart_state_block.dart';
 
 import '../data/model/product.dart';
@@ -30,9 +31,8 @@ class _CartPageState extends State<CartPage> {
                   return Dismissible(
                     key: Key(product.id.toString()),
                     onDismissed: (direction) {
-                      // // CartNotifier cartProducts =
-                      // //     ref.read(cartStateProvider.notifier);
-                      // cartProducts.removeProductFromCart(product: product);
+                      widget.bloc.action
+                          .add(RemoveProductEvent(product: product));
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           duration: const Duration(milliseconds: 300),
                           content: Text('${product.description} removed')));
