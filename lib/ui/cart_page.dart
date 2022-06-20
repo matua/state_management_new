@@ -22,6 +22,9 @@ class _CartPageState extends State<CartPage> {
             int? itemCount;
             List<Product>? products;
             itemCount = snapshot.data?.length;
+            if (itemCount == 0) {
+              return const Center(child: Text('No items in the cart yet'));
+            }
             products = snapshot.data;
             return ListView.builder(
                 itemCount: itemCount,
