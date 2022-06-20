@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:state_management/business/bloc/cart_event.dart';
 import 'package:state_management/business/bloc/cart_state_block.dart';
 import 'package:state_management/data/service/product_service.dart';
 import 'package:state_management/ui/cart_page.dart';
@@ -38,9 +37,7 @@ class ProductsPageState extends State<ProductsPage> {
                       title: Text(product.name),
                       subtitle: Text(product.description),
                       onTap: () {
-                        getIt<CartBloc>()
-                            .action
-                            .add(AddProductEvent(product: product));
+                        getIt<CartBloc>().addProduct(product: product);
                       });
                 }),
           ),
