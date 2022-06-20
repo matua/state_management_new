@@ -1,27 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:state_management/business/bloc/cart_state_block.dart';
 
-import '../business/provider/cart_state.dart';
 import '../data/model/product.dart';
 
-class CartPage extends ConsumerWidget {
-  const CartPage({Key? key}) : super(key: key);
+class CartPage extends StatefulWidget {
+  const CartPage({Key? key, required this.bloc}) : super(key: key);
+  final CartBloc bloc;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final List<Product> products = ref.watch(cartStateProvider).state;
-    return Scaffold(
-      appBar: AppBar(),
-      body: ListView.builder(
-          itemCount: products.length,
-          itemBuilder: (BuildContext context, int index) {
-            var product = products[index];
-            return ListTile(
-              leading: Image.network(product.image),
-              title: Text(product.name),
-              subtitle: Text(product.description),
-            );
-          }),
-    );
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<Product>>(
+        stream: widget.bloc.state,
+        builder: (_, snapshot) {
+          if (snapshot.hasData) {
+            int? itemCount;
+            List<Product>? products;
+            itemCount = snapshot.data?.length;
+            products = snapshot.data;
+            return ListView.builder(
+                itemCount: itemCount,
+                itemBuilder: (BuildContext context, int index) {
+                  final Product product;
+                  product = products![index];
+                  return Dismissible(
+                    key: Key(product.id.toString()),
+                    onDismissed: (direction) {
+                      // // CartNotifier cartProducts =
+                      // //     ref.read(cartStateProvider.notifier);
+                      // cartProducts.removeProductFromCart(product: product);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: const Duration(milliseconds: 300),
+                          content: Text('${product.description} removed')));
+                    },
+                    child: ListTile(
+                      leading: Image.network(product.image),
+                      title: Text(product.name),
+                      subtitle: Text(product.description),
+                    ),
+                  );
+                });
+          } else {
+            return const Center(child: Text('No items in the cart yet'));
+          }
+        });
   }
 }
