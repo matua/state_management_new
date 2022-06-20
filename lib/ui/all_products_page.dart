@@ -4,6 +4,8 @@ import 'package:state_management/business/bloc/cart_state_block.dart';
 import 'package:state_management/data/service/product_service.dart';
 import 'package:state_management/ui/cart_page.dart';
 
+import '../main.dart';
+
 class ProductsPage extends StatefulWidget {
   const ProductsPage({
     Key? key,
@@ -15,7 +17,7 @@ class ProductsPage extends StatefulWidget {
 }
 
 class ProductsPageState extends State<ProductsPage> {
-  late final CartBloc bloc;
+  // late final CartBloc bloc;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,9 @@ class ProductsPageState extends State<ProductsPage> {
                       title: Text(product.name),
                       subtitle: Text(product.description),
                       onTap: () {
-                        bloc.action.add(AddProductEvent(product: product));
+                        getIt<CartBloc>()
+                            .action
+                            .add(AddProductEvent(product: product));
                       });
                 }),
           ),
@@ -47,9 +51,9 @@ class ProductsPageState extends State<ProductsPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 200,
-            child: CartPage(bloc: bloc),
+            child: CartPage(),
           ),
         ],
       ),
@@ -57,14 +61,8 @@ class ProductsPageState extends State<ProductsPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    bloc = CartBloc();
-  }
-
-  @override
   void dispose() {
-    bloc.dispose();
+    getIt<CartBloc>().dispose();
     super.dispose();
   }
 }

@@ -3,10 +3,10 @@ import 'package:state_management/business/bloc/cart_event.dart';
 import 'package:state_management/business/bloc/cart_state_block.dart';
 
 import '../data/model/product.dart';
+import '../main.dart';
 
 class CartPage extends StatefulWidget {
-  const CartPage({Key? key, required this.bloc}) : super(key: key);
-  final CartBloc bloc;
+  const CartPage({Key? key}) : super(key: key);
 
   @override
   State<CartPage> createState() => _CartPageState();
@@ -16,7 +16,7 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Product>>(
-        stream: widget.bloc.state,
+        stream: getIt<CartBloc>().state,
         builder: (_, snapshot) {
           if (snapshot.hasData) {
             int? itemCount;
@@ -34,7 +34,8 @@ class _CartPageState extends State<CartPage> {
                   return Dismissible(
                     key: Key(product.id.toString()),
                     onDismissed: (direction) {
-                      widget.bloc.action
+                      getIt<CartBloc>()
+                          .action
                           .add(RemoveProductEvent(product: product));
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           duration: const Duration(milliseconds: 300),
