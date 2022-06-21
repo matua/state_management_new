@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:state_management/business/bloc/cart_event.dart';
-import 'package:state_management/business/bloc/cart_state_block.dart';
+import 'package:state_management/business/state/cart_actions.dart';
 import 'package:state_management/data/service/product_service.dart';
 import 'package:state_management/ui/cart_page.dart';
+
+import '../business/state/cart_store.dart';
 
 class ProductsPage extends StatelessWidget {
   const ProductsPage({
@@ -17,39 +17,34 @@ class ProductsPage extends StatelessWidget {
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(),
-      body: BlocProvider<CartBloc>(
-        create: (_) => CartBloc(),
-        child: Column(
-          children: [
-            SizedBox(
-              height: height / 2,
-              child: ListView.builder(
-                  itemCount: products.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    var product = products[index];
-                    return ListTile(
+      body: Column(
+        children: [
+          SizedBox(
+            height: height / 2,
+            child: ListView.builder(
+                itemCount: products.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var product = products[index];
+                  return ListTile(
                       leading: Image.network(product.image),
                       title: Text(product.name),
                       subtitle: Text(product.description),
-                      onTap: () => context.read<CartBloc>().add(
-                            AddProductEvent(product: product),
-                          ),
-                    );
-                  }),
+                      onTap: () =>
+                          store.dispatch(AddProductAction(product: product)));
+                }),
+          ),
+          const Text(
+            'Cart',
+            style: TextStyle(
+              fontSize: 21,
+              fontWeight: FontWeight.bold,
             ),
-            const Text(
-              'Cart',
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(
-              height: 200,
-              child: CartPage(),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(
+            height: 200,
+            child: CartPage(),
+          ),
+        ],
       ),
     );
   }
