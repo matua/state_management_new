@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:state_management/business/bloc/cart_event.dart';
-import 'package:state_management/business/bloc/cart_state_block.dart';
 import 'package:state_management/data/service/product_service.dart';
 import 'package:state_management/ui/cart_page.dart';
+
+import '../business/bloc/cart_state_cubit.dart';
 
 class ProductsPage extends StatelessWidget {
   const ProductsPage({
@@ -31,9 +31,8 @@ class ProductsPage extends StatelessWidget {
                       leading: Image.network(product.image),
                       title: Text(product.name),
                       subtitle: Text(product.description),
-                      onTap: () => context.read<CartBloc>().add(
-                            AddProductEvent(product: product),
-                          ),
+                      onTap: () =>
+                          context.read<CartBloc>().addProduct(product: product),
                     );
                   }),
             ),
