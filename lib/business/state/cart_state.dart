@@ -5,23 +5,39 @@ import '../../data/model/product.dart';
 
 @immutable
 class CartState {
-  final List<Product> _products;
+  final List<Product> products;
 
-  const CartState(this._products);
+  const CartState({this.products = const []});
 
-  List<Product> get products => _products;
+  CartState copyWith({
+    List<Product>? products,
+  }) {
+    return CartState(products: products ?? this.products);
+  }
 
-  CartState.initialState() : _products = List<Product>.empty(growable: true);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CartState &&
+          runtimeType == other.runtimeType &&
+          products == other.products;
+
+  @override
+  int get hashCode => products.hashCode;
+
+  CartState.initialState() : products = List<Product>.empty(growable: true);
 }
 
 CartState reducer(CartState previousState, dynamic action) {
   if (action is AddProductAction) {
-    previousState.products.add(action.product);
-    return CartState(previousState.products);
+    CartState copy = previousState.copyWith(products: previousState.products);
+    copy.products.add(action.product);
+    return copy;
   }
   if (action is RemoveProductAction) {
-    previousState.products.removeWhere((element) => element == action.product);
-    return CartState(previousState.products);
+    CartState copy = previousState.copyWith(products: previousState.products);
+    copy.products.removeWhere((element) => element == action.product);
+    return copy;
   }
   return previousState;
 }
