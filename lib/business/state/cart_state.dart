@@ -1,43 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:state_management/business/state/cart_actions.dart';
+import 'package:mobx/mobx.dart';
 
 import '../../data/model/product.dart';
 
-@immutable
-class CartState {
-  final List<Product> products;
+part 'cart_state.g.dart';
 
-  const CartState({this.products = const []});
+class CartState = _CartState with _$CartState;
 
-  CartState copyWith({
-    List<Product>? products,
-  }) {
-    return CartState(products: products ?? this.products);
+abstract class _CartState with Store {
+  @observable
+  List<Product> products = [];
+
+  @action
+  addProduct(Product product) {
+    products = [product, ...products];
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CartState &&
-          runtimeType == other.runtimeType &&
-          products == other.products;
-
-  @override
-  int get hashCode => products.hashCode;
-
-  CartState.initialState() : products = List<Product>.empty(growable: true);
-}
-
-CartState reducer(CartState previousState, dynamic action) {
-  if (action is AddProductAction) {
-    CartState copy = previousState.copyWith(products: previousState.products);
-    copy.products.add(action.product);
-    return copy;
+  @action
+  removeProduct(Product product) {
+    products.removeWhere((p) => p == product);
   }
-  if (action is RemoveProductAction) {
-    CartState copy = previousState.copyWith(products: previousState.products);
-    copy.products.removeWhere((element) => element == action.product);
-    return copy;
-  }
-  return previousState;
 }

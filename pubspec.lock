@@ -91,7 +91,7 @@ packages:
       name: built_value
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.3.2"
+    version: "8.3.3"
   characters:
     dependency: transitive
     description:
@@ -195,13 +195,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  flutter_redux:
-    dependency: "direct main"
-    description:
-      name: flutter_redux
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.10.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -312,6 +305,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  mobx:
+    dependency: "direct main"
+    description:
+      name: mobx
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.7+3"
+  mobx_codegen:
+    dependency: "direct main"
+    description:
+      name: mobx_codegen
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.7"
   package_config:
     dependency: transitive
     description:
@@ -347,13 +354,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  redux:
-    dependency: "direct main"
-    description:
-      name: redux
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.0.0"
   shelf:
     dependency: transitive
     description:

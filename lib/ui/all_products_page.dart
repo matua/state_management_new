@@ -3,7 +3,6 @@ import 'package:state_management/business/state/cart_actions.dart';
 import 'package:state_management/data/service/product_service.dart';
 import 'package:state_management/ui/cart_page.dart';
 
-import '../business/state/cart_store.dart';
 
 class ProductsPage extends StatelessWidget {
   const ProductsPage({
