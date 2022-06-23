@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:state_management/business/bloc/cart_event.dart';
-import 'package:state_management/business/bloc/cart_state_block.dart';
+import 'package:provider/provider.dart';
 import 'package:state_management/data/service/product_service.dart';
 import 'package:state_management/ui/cart_page.dart';
 
-import '../main.dart';
+import '../business/bloc/cart_state.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({
@@ -25,44 +24,39 @@ class ProductsPageState extends State<ProductsPage> {
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(),
-      body: Column(
-        children: [
-          SizedBox(
-            height: height / 2,
-            child: ListView.builder(
-                itemCount: products.length,
-                itemBuilder: (BuildContext context, int index) {
-                  var product = products[index];
-                  return ListTile(
-                      leading: Image.network(product.image),
-                      title: Text(product.name),
-                      subtitle: Text(product.description),
-                      onTap: () {
-                        getIt<CartBloc>()
-                            .action
-                            .add(AddProductEvent(product: product));
-                      });
-                }),
-          ),
-          const Text(
-            'Cart',
-            style: TextStyle(
-              fontSize: 21,
-              fontWeight: FontWeight.bold,
+      body: ChangeNotifierProvider<CartState>(
+        create: (context) => CartState(),
+        child: Column(
+          children: [
+            SizedBox(
+              height: height / 2,
+              child: ListView.builder(
+                  itemCount: products.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var product = products[index];
+                    return ListTile(
+                        leading: Image.network(product.image),
+                        title: Text(product.name),
+                        subtitle: Text(product.description),
+                        onTap: () {
+                          context.read<CartState>().addProduct(product);
+                        });
+                  }),
             ),
-          ),
-          const SizedBox(
-            height: 200,
-            child: CartPage(),
-          ),
-        ],
+            const Text(
+              'Cart',
+              style: TextStyle(
+                fontSize: 21,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(
+              height: 200,
+              child: CartPage(),
+            ),
+          ],
+        ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    getIt<CartBloc>().dispose();
-    super.dispose();
   }
 }
