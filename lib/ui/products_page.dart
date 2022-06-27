@@ -16,7 +16,11 @@ class ProductsPage extends StatelessWidget {
     final products = ProductService().getAllProducts();
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(actions: [
+        GestureDetector(
+            onTap: () => store.dispatch(CleanCartAction()),
+            child: const Icon(Icons.clear)),
+      ]),
       body: Column(
         children: [
           SizedBox(
@@ -29,8 +33,15 @@ class ProductsPage extends StatelessWidget {
                       leading: Image.network(product.image),
                       title: Text(product.name),
                       subtitle: Text(product.description),
-                      onTap: () =>
-                          store.dispatch(AddProductAction(product: product)));
+                      onTap: () {
+                        try {
+                          store.dispatch(AddProductAction(product: product));
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              duration: const Duration(milliseconds: 1000),
+                              content: Text(e.toString())));
+                        }
+                      });
                 }),
           ),
           const Text(

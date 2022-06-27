@@ -13,3 +13,7 @@ class RemoveProductAction extends CartAction {
 
   final Product product;
 }
+
+class CleanCartAction extends CartAction {
+  CleanCartAction();
+}
