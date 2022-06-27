@@ -18,12 +18,21 @@ class CartBloc {
   }
 
   void _mapEventToState(CartEvent action) async {
-    if (action is AddProductEvent) {
-      _products = [action.product, ..._products];
-    } else if (action is RemoveProductEvent) {
-      _products.removeWhere((element) => element == action.product);
+    try {
+      if (action is AddProductEvent) {
+        if (!_products.contains(action.product)) {
+          _products = [action.product, ..._products];
+        } else {
+          throw Exception(
+              "Product is already in the cart. Only one is allowed.");
+        }
+      } else if (action is RemoveProductEvent) {
+        _products.removeWhere((element) => element == action.product);
+      }
+      _stateController.add(_products);
+    } catch (e) {
+      _stateController.addError(e);
     }
-    _stateController.add(_products);
   }
 
   void dispose() {

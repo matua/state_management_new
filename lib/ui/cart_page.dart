@@ -18,13 +18,18 @@ class _CartPageState extends State<CartPage> {
     return StreamBuilder<List<Product>>(
         stream: getIt<CartBloc>().state,
         builder: (_, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasError) {
+            return Padding(
+              padding: const EdgeInsets.all(45.0),
+              child: Center(
+                  child: Text(
+                      style: const TextStyle(fontSize: 30),
+                      snapshot.error.toString())),
+            );
+          } else if (snapshot.hasData) {
             int? itemCount;
             List<Product>? products;
             itemCount = snapshot.data?.length;
-            if (itemCount == 0) {
-              return const Center(child: Text('No items in the cart yet'));
-            }
             products = snapshot.data;
             return ListView.builder(
                 itemCount: itemCount,
@@ -32,7 +37,7 @@ class _CartPageState extends State<CartPage> {
                   final Product product;
                   product = products![index];
                   return Dismissible(
-                    key: Key(product.id.toString()),
+                    key: UniqueKey(),
                     onDismissed: (direction) {
                       getIt<CartBloc>()
                           .action
@@ -41,6 +46,7 @@ class _CartPageState extends State<CartPage> {
                           duration: const Duration(milliseconds: 300),
                           content: Text('${product.description} removed')));
                     },
+                    background: Container(color: Colors.red),
                     child: ListTile(
                       leading: Image.network(product.image),
                       title: Text(product.name),
@@ -49,7 +55,10 @@ class _CartPageState extends State<CartPage> {
                   );
                 });
           } else {
-            return const Center(child: Text('No items in the cart yet'));
+            return const Center(
+                child: Text(
+                    style: TextStyle(fontSize: 30),
+                    'No items in the cart yet'));
           }
         });
   }
