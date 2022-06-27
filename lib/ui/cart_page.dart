@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/business/bloc/cart_event.dart';
-import 'package:state_management/business/bloc/cart_state_block.dart';
 
+import '../business/bloc/cart_bloc.dart';
 import '../data/model/product.dart';
 import '../main.dart';
 
@@ -31,6 +31,9 @@ class _CartPageState extends State<CartPage> {
             List<Product>? products;
             itemCount = snapshot.data?.length;
             products = snapshot.data;
+            if (itemCount == 0) {
+              return const EmptyCartWidget();
+            }
             return ListView.builder(
                 itemCount: itemCount,
                 itemBuilder: (BuildContext context, int index) {
@@ -61,5 +64,18 @@ class _CartPageState extends State<CartPage> {
                     'No items in the cart yet'));
           }
         });
+  }
+}
+
+class EmptyCartWidget extends StatelessWidget {
+  const EmptyCartWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+        child:
+            Text(style: TextStyle(fontSize: 30), 'No items in the cart yet'));
   }
 }

@@ -13,3 +13,7 @@ class RemoveProductEvent extends CartEvent {
 
   final Product product;
 }
+
+class CleanCartEvent extends CartEvent {
+  CleanCartEvent();
+}

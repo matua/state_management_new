@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:state_management/business/bloc/cart_event.dart';
-import 'package:state_management/business/bloc/cart_state_block.dart';
 import 'package:state_management/data/service/product_service.dart';
 import 'package:state_management/ui/cart_page.dart';
 
+import '../business/bloc/cart_bloc.dart';
 import '../main.dart';
 
 class ProductsPage extends StatefulWidget {
@@ -24,7 +24,11 @@ class ProductsPageState extends State<ProductsPage> {
     final products = ProductService().getAllProducts();
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(actions: [
+        GestureDetector(
+            onTap: () => getIt<CartBloc>().action.add(CleanCartEvent()),
+            child: const Icon(Icons.clear)),
+      ]),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -38,11 +42,9 @@ class ProductsPageState extends State<ProductsPage> {
                         leading: Image.network(product.image),
                         title: Text(product.name),
                         subtitle: Text(product.description),
-                        onTap: () {
-                          getIt<CartBloc>()
-                              .action
-                              .add(AddProductEvent(product: product));
-                        });
+                        onTap: () => getIt<CartBloc>()
+                            .action
+                            .add(AddProductEvent(product: product)));
                   }),
             ),
             const Text(

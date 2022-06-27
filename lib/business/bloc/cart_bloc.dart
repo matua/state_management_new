@@ -28,6 +28,8 @@ class CartBloc {
         }
       } else if (action is RemoveProductEvent) {
         _products.removeWhere((element) => element == action.product);
+      } else if (action is CleanCartEvent) {
+        _products.clear();
       }
       _stateController.add(_products);
     } catch (e) {
