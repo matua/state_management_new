@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:state_management/business/bloc/cart_state_block.dart';
 
+import '../business/bloc/cart_cubit.dart';
 import '../data/model/product.dart';
 import '../main.dart';
 
@@ -15,14 +15,22 @@ class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Product>>(
-        stream: getIt<CartBloc>().state,
+        stream: getIt<CartCubit>().state,
         builder: (_, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasError) {
+            return Padding(
+              padding: const EdgeInsets.all(45.0),
+              child: Center(
+                  child: Text(
+                      style: const TextStyle(fontSize: 30),
+                      snapshot.error.toString())),
+            );
+          } else if (snapshot.hasData) {
             int? itemCount;
             List<Product>? products;
             itemCount = snapshot.data?.length;
             if (itemCount == 0) {
-              return const Center(child: Text('No items in the cart yet'));
+              return const EmptyCartWidget();
             }
             products = snapshot.data;
             return ListView.builder(
@@ -31,9 +39,9 @@ class _CartPageState extends State<CartPage> {
                   final Product product;
                   product = products![index];
                   return Dismissible(
-                    key: Key(product.id.toString()),
+                    key: UniqueKey(),
                     onDismissed: (direction) {
-                      getIt<CartBloc>().removeProduct(product: product);
+                      getIt<CartCubit>().removeProduct(product: product);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           duration: const Duration(milliseconds: 300),
                           content: Text('${product.description} removed')));
@@ -46,8 +54,21 @@ class _CartPageState extends State<CartPage> {
                   );
                 });
           } else {
-            return const Center(child: Text('No items in the cart yet'));
+            return const EmptyCartWidget();
           }
         });
+  }
+}
+
+class EmptyCartWidget extends StatelessWidget {
+  const EmptyCartWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+        child:
+            Text(style: TextStyle(fontSize: 30), 'No items in the cart yet'));
   }
 }
