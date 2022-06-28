@@ -22,11 +22,17 @@ class ProductsPageState extends State<ProductsPage> {
   Widget build(BuildContext context) {
     final products = ProductService().getAllProducts();
     var height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: AppBar(),
-      body: ChangeNotifierProvider<CartState>(
-        create: (context) => CartState(),
-        child: Column(
+    return ChangeNotifierProvider<CartState>(
+      create: (context) => CartState(),
+      child: Scaffold(
+        appBar: AppBar(actions: [
+          Builder(builder: (context) {
+            return GestureDetector(
+                onTap: () => context.read<CartState>().cleanCart(),
+                child: const Icon(Icons.clear));
+          }),
+        ]),
+        body: Column(
           children: [
             SizedBox(
               height: height / 2,
@@ -39,7 +45,13 @@ class ProductsPageState extends State<ProductsPage> {
                         title: Text(product.name),
                         subtitle: Text(product.description),
                         onTap: () {
-                          context.read<CartState>().addProduct(product);
+                          try {
+                            context.read<CartState>().addProduct(product);
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                duration: const Duration(milliseconds: 1000),
+                                content: Text(e.toString())));
+                          }
                         });
                   }),
             ),
