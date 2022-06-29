@@ -1,18 +1,18 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'product.freezed.dart';
 
 part 'product.g.dart';
 
-@JsonSerializable()
-class Product {
-  final int id;
-  final String name;
-  final String description;
-  final String image;
-
-  Product(this.id, this.name, this.description, this.image);
+@freezed
+class Product with _$Product {
+  const factory Product({
+    required int id,
+    required String name,
+    required String description,
+    required String image,
+  }) = _Product;
 
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ProductToJson(this);
 }

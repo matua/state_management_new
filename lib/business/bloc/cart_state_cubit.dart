@@ -1,18 +1,32 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/model/product.dart';
+import 'products_state.dart';
 
-class CartBloc extends Cubit<List<Product>> {
-  CartBloc() : super(List<Product>.empty(growable: true));
-  List<Product> _products = List<Product>.empty(growable: true);
+class CartCubit extends Cubit<ProductsState> {
+  CartCubit() : super(ProductsState(products: []));
 
-  Stream<List<Product>> addProduct({required Product product}) async* {
-    _products = [product, ..._products];
-    yield _products;
+  void addProduct({required Product product}) {
+    var newState = state.copyWith(products: state.products);
+    if (!state.products.contains(product)) {
+      newState.products.insert(0, product);
+    } else {
+      addError(
+          Exception("Product is already in the cart. Only one is allowed."),
+          StackTrace.current);
+    }
+    emit(newState);
   }
 
-  Stream<List<Product>> removeProduct({required Product product}) async* {
-    _products.removeWhere((element) => element == product);
-    yield _products;
+  void removeProduct({required Product product}) {
+    var newState = state.copyWith(products: state.products);
+    newState.products.removeWhere((element) => element == product);
+    emit(newState);
+  }
+
+  void clearCart() {
+    var newState = state.copyWith(products: state.products);
+    newState.products.clear();
+    emit(newState);
   }
 }

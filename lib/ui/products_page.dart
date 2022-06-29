@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:state_management/business/bloc/products_state.dart';
 import 'package:state_management/data/service/product_service.dart';
 import 'package:state_management/ui/cart_page.dart';
 
@@ -15,11 +16,14 @@ class ProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final products = ProductService().getAllProducts();
     var height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: AppBar(),
-      body: BlocProvider<CartBloc>(
-        create: (_) => CartBloc(),
-        child: Column(
+    return BlocBuilder<CartCubit, ProductsState>(
+      builder: (context, state) => Scaffold(
+        appBar: AppBar(actions: [
+          GestureDetector(
+              onTap: () => BlocProvider.of<CartCubit>(context).clearCart(),
+              child: const Icon(Icons.clear)),
+        ]),
+        body: Column(
           children: [
             SizedBox(
               height: height / 2,
@@ -31,8 +35,8 @@ class ProductsPage extends StatelessWidget {
                       leading: Image.network(product.image),
                       title: Text(product.name),
                       subtitle: Text(product.description),
-                      onTap: () =>
-                          context.read<CartBloc>().addProduct(product: product),
+                      onTap: () => BlocProvider.of<CartCubit>(context)
+                          .addProduct(product: product),
                     );
                   }),
             ),
@@ -43,9 +47,11 @@ class ProductsPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(
+                SizedBox(
               height: 200,
-              child: CartPage(),
+              child: state.products.isEmpty
+                  ? const EmptyCartWidget()
+                  : const CartPage(),
             ),
           ],
         ),
