@@ -16,7 +16,7 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     List<Product> cartProducts = context.watch<CartState>().products;
     return cartProducts.isEmpty
-        ? const Center(child: Text('No items in the cart yet'))
+        ? const EmptyCartWidget()
         : ListView.builder(
             itemCount: cartProducts.length,
             itemBuilder: (BuildContext context, int index) {
@@ -37,5 +37,18 @@ class _CartPageState extends State<CartPage> {
                 ),
               );
             });
+  }
+}
+
+class EmptyCartWidget extends StatelessWidget {
+  const EmptyCartWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+        child:
+            Text(style: TextStyle(fontSize: 30), 'No items in the cart yet'));
   }
 }
