@@ -51,6 +51,17 @@ mixin _$CartState on _CartState, Store {
   }
 
   @override
+  dynamic clearCart() {
+    final _$actionInfo =
+        _$_CartStateActionController.startAction(name: '_CartState.clearCart');
+    try {
+      return super.clearCart();
+    } finally {
+      _$_CartStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 products: ${products}

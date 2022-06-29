@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import '../model/product.dart';
-import '../products_json.dart';
+import '../sample_data.dart';
 
 /*DUMMY PRODUCT SERVICE*/
 

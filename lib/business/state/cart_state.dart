@@ -12,11 +12,20 @@ abstract class _CartState with Store {
 
   @action
   addProduct(Product product) {
-    products = [product, ...products];
+    if (!products.contains(product)) {
+      products = [product, ...products];
+    } else {
+      throw Exception("Product is already in the cart. Only one is allowed.");
+    }
   }
 
   @action
   removeProduct(Product product) {
     products.removeWhere((p) => p == product);
+  }
+
+  @action
+  clearCart() {
+    products = [];
   }
 }
