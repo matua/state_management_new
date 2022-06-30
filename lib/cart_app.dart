@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:state_management/business/bloc/cart_state_cubit.dart';
+import 'package:state_management/business/bloc/cart_cubit.dart';
 import 'package:state_management/ui/products_page.dart';
 
 class CartApp extends StatelessWidget {

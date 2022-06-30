@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/model/product.dart';
@@ -28,5 +29,13 @@ class CartCubit extends Cubit<ProductsState> {
     var newState = state.copyWith(products: state.products);
     newState.products.clear();
     emit(newState);
+  }
+
+  @override
+  onError(error, stackTrace) {
+    if (kDebugMode) {
+      print(error.toString());
+    }
+    super.onError(error, stackTrace);
   }
 }

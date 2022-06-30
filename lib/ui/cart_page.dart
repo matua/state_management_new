@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:state_management/business/bloc/products_state.dart';
 
-import '../business/bloc/cart_state_cubit.dart';
+import '../business/bloc/cart_cubit.dart';
 import '../data/model/product.dart';
 
 class CartPage extends StatelessWidget {

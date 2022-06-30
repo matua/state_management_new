@@ -4,7 +4,7 @@ import 'package:state_management/business/bloc/products_state.dart';
 import 'package:state_management/data/service/product_service.dart';
 import 'package:state_management/ui/cart_page.dart';
 
-import '../business/bloc/cart_state_cubit.dart';
+import '../business/bloc/cart_cubit.dart';
 
 class ProductsPage extends StatelessWidget {
   const ProductsPage({
