@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:state_management/business/bloc/cart_event.dart';
 import 'package:state_management/business/bloc/products_state.dart';
 
-import '../business/bloc/cart_state_cubit.dart';
+import '../business/bloc/cart_bloc.dart';
 import '../data/model/product.dart';
 
 class CartPage extends StatelessWidget {
@@ -10,7 +11,7 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CartCubit, ProductsState>(
+    return BlocBuilder<CartBloc, ProductsState>(
       builder: (_, state) => Builder(builder: (context) {
         return ListView.builder(
             itemCount: state.products.length,
@@ -20,8 +21,8 @@ class CartPage extends StatelessWidget {
               return Dismissible(
                 key: UniqueKey(),
                 onDismissed: (direction) {
-                  BlocProvider.of<CartCubit>(context)
-                      .removeProduct(product: product);
+                  BlocProvider.of<CartBloc>(context)
+                      .add(RemoveProductEvent(product: product));
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: const Duration(milliseconds: 300),
                       content: Text('${product.description} removed')));

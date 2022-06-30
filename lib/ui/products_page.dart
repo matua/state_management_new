@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:state_management/business/bloc/cart_event.dart';
 import 'package:state_management/business/bloc/products_state.dart';
 import 'package:state_management/data/service/product_service.dart';
 import 'package:state_management/ui/cart_page.dart';
 
-import '../business/bloc/cart_state_cubit.dart';
+import '../business/bloc/cart_bloc.dart';
 
 class ProductsPage extends StatelessWidget {
   const ProductsPage({
@@ -16,11 +17,12 @@ class ProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final products = ProductService().getAllProducts();
     var height = MediaQuery.of(context).size.height;
-    return BlocBuilder<CartCubit, ProductsState>(
+    return BlocBuilder<CartBloc, ProductsState>(
       builder: (context, state) => Scaffold(
         appBar: AppBar(actions: [
           GestureDetector(
-              onTap: () => BlocProvider.of<CartCubit>(context).clearCart(),
+              onTap: () =>
+                  BlocProvider.of<CartBloc>(context).add(CleanCartEvent()),
               child: const Icon(Icons.clear)),
         ]),
         body: Column(
@@ -35,8 +37,8 @@ class ProductsPage extends StatelessWidget {
                       leading: Image.network(product.image),
                       title: Text(product.name),
                       subtitle: Text(product.description),
-                      onTap: () => BlocProvider.of<CartCubit>(context)
-                          .addProduct(product: product),
+                      onTap: () => BlocProvider.of<CartBloc>(context)
+                          .add(AddProductEvent(product: product)),
                     );
                   }),
             ),
