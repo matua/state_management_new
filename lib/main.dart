@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'cart_app.dart';
 
 void main() {
-  runApp(const CartApp());
+  runApp(
+    const ProviderScope(
+      child: CartApp(),
+    ),
+  );
 }

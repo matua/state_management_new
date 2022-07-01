@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../business/bloc/cart_state.dart';
+import '../business/business/providers.dart';
 import '../data/model/product.dart';
 
-class CartPage extends StatefulWidget {
+class CartPage extends ConsumerWidget {
   const CartPage({Key? key}) : super(key: key);
 
   @override
-  State<CartPage> createState() => _CartPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final productsState = ref.watch(cartStateProvider);
+    final List<Product> cartProducts = productsState.products;
 
-class _CartPageState extends State<CartPage> {
-  @override
-  Widget build(BuildContext context) {
-    List<Product> cartProducts = context.watch<CartState>().products;
     return cartProducts.isEmpty
         ? const EmptyCartWidget()
         : ListView.builder(
@@ -23,9 +20,10 @@ class _CartPageState extends State<CartPage> {
               final Product product;
               product = cartProducts[index];
               return Dismissible(
-                key: Key(product.id.toString()),
+                key: UniqueKey(),
                 onDismissed: (direction) {
-                  context.read<CartState>().removeProduct(product);
+                  ref.read(cartStateProvider.notifier).removeProduct(product);
+
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: const Duration(milliseconds: 300),
                       content: Text('${product.description} removed')));
