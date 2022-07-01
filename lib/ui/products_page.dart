@@ -17,49 +17,61 @@ class ProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final products = ProductService().getAllProducts();
     var height = MediaQuery.of(context).size.height;
-    return BlocBuilder<CartBloc, ProductsState>(
-      builder: (context, state) => Scaffold(
-        appBar: AppBar(actions: [
-          GestureDetector(
-              onTap: () =>
-                  BlocProvider.of<CartBloc>(context).add(CleanCartEvent()),
-              child: const Icon(Icons.clear)),
-        ]),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: height / 2,
-                child: ListView.builder(
-                    itemCount: products.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      var product = products[index];
-                      return ListTile(
-                        leading: Image.network(product.image),
-                        title: Text(product.name),
-                        subtitle: Text(product.description),
-                        onTap: () => BlocProvider.of<CartBloc>(context)
-                            .add(AddProductEvent(product: product)),
-                      );
-                    }),
+    return BlocListener<CartBloc, ProductsState>(
+        listener: (context, state) {
+          if (state is ErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                duration: Duration(milliseconds: 1000),
+                content: Text(
+                    "Product is already in the cart. Only one is allowed."),
               ),
-              const Text(
-                'Cart',
-                style: TextStyle(
-                  fontSize: 21,
-                  fontWeight: FontWeight.bold,
-                ),
+            );
+          }
+        },
+        child: BlocBuilder<CartBloc, ProductsState>(
+          builder: (context, state) => Scaffold(
+            appBar: AppBar(actions: [
+              GestureDetector(
+                  onTap: () =>
+                      BlocProvider.of<CartBloc>(context).add(CleanCartEvent()),
+                  child: const Icon(Icons.clear)),
+            ]),
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: height / 2,
+                    child: ListView.builder(
+                        itemCount: products.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          var product = products[index];
+                          return ListTile(
+                            leading: Image.network(product.image),
+                            title: Text(product.name),
+                            subtitle: Text(product.description),
+                            onTap: () => BlocProvider.of<CartBloc>(context)
+                                .add(AddProductEvent(product: product)),
+                          );
+                        }),
+                  ),
+                  const Text(
+                    'Cart',
+                    style: TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 200,
+                    child: state.products.isEmpty
+                        ? const EmptyCartWidget()
+                        : const CartPage(),
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 200,
-                child: state.products.isEmpty
-                    ? const EmptyCartWidget()
-                    : const CartPage(),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

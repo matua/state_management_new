@@ -21,15 +21,11 @@ Product _$ProductFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Product {
   int get id => throw _privateConstructorUsedError;
-
   String get name => throw _privateConstructorUsedError;
-
   String get description => throw _privateConstructorUsedError;
-
   String get image => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
   @JsonKey(ignore: true)
   $ProductCopyWith<Product> get copyWith => throw _privateConstructorUsedError;
 }
@@ -38,7 +34,6 @@ mixin _$Product {
 abstract class $ProductCopyWith<$Res> {
   factory $ProductCopyWith(Product value, $Res Function(Product) then) =
       _$ProductCopyWithImpl<$Res>;
-
   $Res call({int id, String name, String description, String image});
 }
 
@@ -47,7 +42,6 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
   _$ProductCopyWithImpl(this._value, this._then);
 
   final Product _value;
-
   // ignore: unused_field
   final $Res Function(Product) _then;
 
@@ -84,7 +78,6 @@ abstract class _$$_ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
   factory _$$_ProductCopyWith(
           _$_Product value, $Res Function(_$_Product) then) =
       __$$_ProductCopyWithImpl<$Res>;
-
   @override
   $Res call({int id, String name, String description, String image});
 }
@@ -195,16 +188,12 @@ abstract class _Product implements Product {
 
   @override
   int get id => throw _privateConstructorUsedError;
-
   @override
   String get name => throw _privateConstructorUsedError;
-
   @override
   String get description => throw _privateConstructorUsedError;
-
   @override
   String get image => throw _privateConstructorUsedError;
-
   @override
   @JsonKey(ignore: true)
   _$$_ProductCopyWith<_$_Product> get copyWith =>

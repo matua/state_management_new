@@ -17,7 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ProductsState {
   List<Product> get products => throw _privateConstructorUsedError;
-
   set products(List<Product> value) => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +29,6 @@ abstract class $ProductsStateCopyWith<$Res> {
   factory $ProductsStateCopyWith(
           ProductsState value, $Res Function(ProductsState) then) =
       _$ProductsStateCopyWithImpl<$Res>;
-
   $Res call({List<Product> products});
 }
 
@@ -40,7 +38,6 @@ class _$ProductsStateCopyWithImpl<$Res>
   _$ProductsStateCopyWithImpl(this._value, this._then);
 
   final ProductsState _value;
-
   // ignore: unused_field
   final $Res Function(ProductsState) _then;
 
@@ -63,7 +60,6 @@ abstract class _$$_ProductsStateCopyWith<$Res>
   factory _$$_ProductsStateCopyWith(
           _$_ProductsState value, $Res Function(_$_ProductsState) then) =
       __$$_ProductsStateCopyWithImpl<$Res>;
-
   @override
   $Res call({List<Product> products});
 }
@@ -116,7 +112,6 @@ abstract class _ProductsState implements ProductsState {
 
   @override
   List<Product> get products => throw _privateConstructorUsedError;
-
   @override
   @JsonKey(ignore: true)
   _$$_ProductsStateCopyWith<_$_ProductsState> get copyWith =>

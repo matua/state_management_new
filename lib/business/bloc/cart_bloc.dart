@@ -15,6 +15,7 @@ class CartBloc extends Bloc<CartEvent, ProductsState> {
         addError(
             Exception("Product is already in the cart. Only one is allowed."),
             StackTrace.current);
+        emit(ErrorState());
       }
       emit(newState);
     });
