@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../business/business/providers.dart';
 import '../data/model/product.dart';
 
-class CartPage extends ConsumerWidget {
+class CartPage extends HookConsumerWidget {
   const CartPage({Key? key}) : super(key: key);
 
   @override
