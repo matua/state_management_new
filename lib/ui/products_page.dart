@@ -32,41 +32,45 @@ class ProductsPageState extends State<ProductsPage> {
                 child: const Icon(Icons.clear));
           }),
         ]),
-        body: Column(
-          children: [
-            SizedBox(
-              height: height / 2,
-              child: ListView.builder(
-                  itemCount: products.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    var product = products[index];
-                    return ListTile(
-                        leading: Image.network(product.image),
-                        title: Text(product.name),
-                        subtitle: Text(product.description),
-                        onTap: () {
-                          try {
-                            context.read<CartState>().addProduct(product);
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                duration: const Duration(milliseconds: 1000),
-                                content: Text(e.toString())));
-                          }
-                        });
-                  }),
-            ),
-            const Text(
-              'Cart',
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.bold,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: height / 2,
+                child: ListView.builder(
+                    itemCount: products.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var product = products[index];
+                      return ListTile(
+                          leading: Image.network(product.image),
+                          title: Text(product.name),
+                          subtitle: Text(product.description),
+                          onTap: () {
+                            try {
+                              context.read<CartState>().addProduct(product);
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      duration:
+                                          const Duration(milliseconds: 1000),
+                                      content: Text(e.toString())));
+                            }
+                          });
+                    }),
               ),
-            ),
-            const SizedBox(
-              height: 200,
-              child: CartPage(),
-            ),
-          ],
+              const Text(
+                'Cart',
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                height: 200,
+                child: CartPage(),
+              ),
+            ],
+          ),
         ),
       ),
     );
