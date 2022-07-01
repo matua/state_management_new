@@ -23,37 +23,39 @@ class ProductsPage extends StatelessWidget {
               onTap: () => BlocProvider.of<CartCubit>(context).clearCart(),
               child: const Icon(Icons.clear)),
         ]),
-        body: Column(
-          children: [
-            SizedBox(
-              height: height / 2,
-              child: ListView.builder(
-                  itemCount: products.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    var product = products[index];
-                    return ListTile(
-                      leading: Image.network(product.image),
-                      title: Text(product.name),
-                      subtitle: Text(product.description),
-                      onTap: () => BlocProvider.of<CartCubit>(context)
-                          .addProduct(product: product),
-                    );
-                  }),
-            ),
-            const Text(
-              'Cart',
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.bold,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: height / 2,
+                child: ListView.builder(
+                    itemCount: products.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var product = products[index];
+                      return ListTile(
+                        leading: Image.network(product.image),
+                        title: Text(product.name),
+                        subtitle: Text(product.description),
+                        onTap: () => BlocProvider.of<CartCubit>(context)
+                            .addProduct(product: product),
+                      );
+                    }),
               ),
-            ),
-                SizedBox(
-              height: 200,
-              child: state.products.isEmpty
-                  ? const EmptyCartWidget()
-                  : const CartPage(),
-            ),
-          ],
+              const Text(
+                'Cart',
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 200,
+                child: state.products.isEmpty
+                    ? const EmptyCartWidget()
+                    : const CartPage(),
+              ),
+            ],
+          ),
         ),
       ),
     );
