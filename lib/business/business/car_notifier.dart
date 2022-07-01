@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/model/product.dart';
 import 'products_state.dart';
 
-class CartState extends StateNotifier<ProductsState> {
-  CartState()
+class CartNotifier extends StateNotifier<ProductsState> {
+  CartNotifier()
       : super(ProductsState(products: List<Product>.empty(growable: true)));
 
   void addProduct(Product product) {
